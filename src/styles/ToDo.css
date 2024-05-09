@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.outer-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.list-name {
+  color: grey;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 50%;
+  overflow-y: auto;
+  padding-top: 20px;
+  margin-left: 25%;
+}
+
+.add-list-name-btn {
+  background-color: grey;
+  color: black;
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  height: 20px;
+  margin-top: 60px;
+}
+
+.add-list-name-input {
+  background-color: grey;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  height: 20px;
+}

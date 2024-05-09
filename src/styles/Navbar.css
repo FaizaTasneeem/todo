@@ -5,6 +5,7 @@
 }
 
 .nav-container {
+  position: fixed;
   color: wheat;
   background-color: #282c34;
   display: flex;
