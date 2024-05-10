@@ -13,7 +13,7 @@
   position: relative;
 }
 
-.list-name {
+.list-items-container {
   color: grey;
   display: flex;
   flex-direction: column;
@@ -24,6 +24,26 @@
   margin-left: 25%;
 }
 
+.list-items {
+  color: grey;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+
+.list-name {
+  color: grey;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 50%;
+  overflow-y: auto;
+  padding-top: 20px;
+}
+
+.show-list-item-btn,
 .add-list-name-btn {
   background-color: grey;
   color: black;
@@ -31,8 +51,8 @@
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
-  height: 20px;
-  margin-top: 60px;
+  height: 5px;
+  /* margin-top: 60px; */
 }
 
 .add-list-name-input {

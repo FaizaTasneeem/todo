@@ -48,7 +48,7 @@ function Navbar({allList, sendBackListName, sendCurrentListName}) {
                 </div>
             )}
             {allListNames.map((listName, index) => (
-                index > 0 && <button className='list-names' style={{paddingTop:'15px', paddingBottom:'25px'}} key={index} onClick={() => sendCurrentListName(listName)}>{listName}</button>
+                index > 0 && <button className='list-names' style={{paddingTop:'15px', paddingBottom:'25px', marginBottom: index === allListNames.length - 1 ? '50px' : '5px'}} key={index} onClick={() => sendCurrentListName(listName)}>{listName}</button>
             ))}
             {/* <h3 style={{marginTop: '50px', color: 'white'}} >{inputValue}</h3> */}
         </div>
