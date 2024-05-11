@@ -45,20 +45,20 @@
 
 .show-list-item-btn,
 .add-list-name-btn {
-  background-color: grey;
-  color: black;
+  background-color: #282c34;
+  color: white;
   cursor: pointer;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
-  height: 35px;
+  height: 5px;
   transition-duration: 0.7s;
   /* margin-top: 60px; */
 }
-
-/* .show-list-item-btn:hover {
-  height: 200px;
-} */
+.item-name {
+  display: flex;
+  flex-direction: row;
+}
 
 .add-list-name-input {
   background-color: grey;
@@ -70,15 +70,28 @@
 }
 
 .expanded {
-  height: 200px;
+  /* height: 300px; */
+  transition-duration: 1s;
+  height: 400px;
 }
 
-/* .edit-item-input {
+.current-item-info {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top: 10px;
+}
+
+.edit-item-input {
+  background-color: #282c34;
+  width: 50%;
+  /* cursor: pointer; */
   border: none;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 2px solid black;
+  outline: none;
   transition: border-bottom-color 0.3s ease;
 }
 
-.edit-item-input:focus {
-  border-bottom-color: blue;
-} */
+.edit-item-input::placeholder {
+  color: white;
+}

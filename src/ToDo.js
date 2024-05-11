@@ -2,11 +2,11 @@ import React, {useState, useEffect}  from "react";
 import Navbar from './components/Navbar';
 import Form from "./components/Form";
 import './styles/ToDo.css'
+import { MdOutlineExpandLess } from "react-icons/md";
 
 
 function ToDo() {
     const [showTitleRenameInput, setShowTitleRenameInput] = useState(false);
-    const [showForm, setShowForm] = useState(false);
     const [expanded, setExpanded] = useState(false);
 
     const [allTodoList, setAllTodoList] = useState({
@@ -85,7 +85,6 @@ function ToDo() {
     const [currentListName, setCurrentListName] = useState(Object.keys(allTodoList)[0]);
     const [prevListName, setPrevListName] = useState("");
     const [currentListIdx, setCurrentListIdx] = useState(null);
-    const [hoveredListIdx, setHoveredListIdx] = useState(null);
     const [demo, setDemo] = useState(null);
     
     // const [currentListItems, setCurrentListItems] = useState([])
@@ -154,18 +153,14 @@ function ToDo() {
       }, [showTitleRenameInput]);
 
 
-    function handleAddItemButtonClick(index) {
-        setExpanded(!expanded);
+    function handleAddItemOnClick(index) {
+        setExpanded(true);
         setCurrentListIdx(index);
-        // setHoveredListIdx(index);
-        setShowForm(prevState => !prevState);
     }
 
-    function handleHoverEffects(index) {
-        setExpanded(!expanded);
-        setHoveredListIdx(index);
+    function handleAddItemOnBlur() {
+        setExpanded(false);
         setCurrentListIdx(null);
-        setShowForm(false);
     }
 
     function handleClick() {
@@ -177,7 +172,7 @@ function ToDo() {
 
     const handleCurrentItemChange = (e) => {
         setDemo(e.target.value);
-      };
+    };
 
     useEffect(() => {
         console.log("demo :" + demo);
@@ -213,45 +208,78 @@ function ToDo() {
 
                 <div className="list-items">
                     
-                    <div className="add-list-name-btn" style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} onClick={() => handleAddItemButtonClick(currentList.length)}>
+                    <div className="add-list-name-btn" style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} onClick={() => handleAddItemOnClick(currentList.length)}>
                     + Add New Item
                     </div>
 
                     {currentList && currentList.map((item, index) => (
                         <div className={`show-list-item-btn ${currentListIdx === index ? 'expanded' : ''}`} 
                         style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} 
-                        onClick={() => handleAddItemButtonClick(index)} 
-                        // onBlur={() => setCurrentListIdx(null)}
-                        onMouseEnter={() => handleHoverEffects(index)}
-                        onMouseLeave={() => setHoveredListIdx(null)} 
+                        onClick={() => handleAddItemOnClick(index)} 
                         tabIndex={0} 
                         key={index}
                         >
-                        {item.name}
+                        
+                        <div className="item-name">
+                            {item.name}
+                            {expanded && currentListIdx === index && <MdOutlineExpandLess style={{marginLeft:'93%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
+                        </div>
 
                         {currentListIdx === index && (
-                            
-                            <div className="current-item-info">
+                            <div className="current-item-info" style={{marginTop:'4%'}} >
+                                {item.name}
                                 <input className="edit-item-input"
+                                    style={{height: '30px', borderRadius:'4px', width:'90%', marginTop:'10px'}} 
                                     type="text"
-                                    // value={item.name}
                                     onChange={handleCurrentItemChange}
-                                    // onBlur={handleInputBlur}
-                                    // placeholder="Enter List Name"
-                                    // autoFocus
+                                    placeholder="Enter Task Name"
+                                    autoFocus
                                 />
-                                <div>{item.date}</div>
-                                <div>{item.priority}</div>
+                                
+                                <div style={{marginTop:'24px'}}>{item.date}</div>
+                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} for="calendar">Select a date:</label>
+                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar"/>
+
+                                <div style={{marginTop:'24px'}}>{item.priority}</div>
+                                <fieldset style={{width:'90%', marginTop:'10px'}} >
+                                    <legend>Select Priority:</legend>
+                                    <label htmlFor="priority1">
+                                    <input
+                                        type="radio"
+                                        id="priority1"
+                                        name="language"
+                                        value="High"
+                                        // checked={selectedLanguage === 'javascript'}
+                                        // onChange={handleLanguageChange}
+                                    />
+                                    High
+                                    </label><br />
+                                    <label htmlFor="priority2">
+                                    <input
+                                        type="radio"
+                                        id="priority2"
+                                        name="language"
+                                        value="python"
+                                        // checked={selectedLanguage === 'python'}
+                                        // onChange={handleLanguageChange}
+                                    />
+                                    Medium
+                                    </label><br />
+                                    <label htmlFor="priority3">
+                                    <input
+                                        type="radio"
+                                        id="language3"
+                                        name="language"
+                                        value="java"
+                                        // checked={selectedLanguage === 'java'}
+                                        // onChange={handleLanguageChange}
+                                    />
+                                    Low
+                                    </label><br />
+                                </fieldset>
                                 <div>{item.completed}</div>
                             </div>
                         )} 
-                        {hoveredListIdx === index && !showForm && (
-                            <div className="hovered-item-info">
-                                <div>{item.date}</div>
-                                <div>{item.priority}</div>
-                                <div>{item.completed}</div>
-                            </div>
-                        )}
                         </div>
 
                     ))}
