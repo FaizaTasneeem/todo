@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+}
+
+.show-form {
+  background-color: grey;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  height: 5px;
+  transition-duration: 0.7s;
+}

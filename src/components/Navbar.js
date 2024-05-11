@@ -21,7 +21,7 @@ function Navbar({allList, sendBackListName, sendCurrentListName}) {
 
     useEffect(() => {
         if(inputValue && !showInput) {
-            sendBackListName(inputValue);
+          sendBackListName(inputValue);
         }
       }, [showInput]);
 

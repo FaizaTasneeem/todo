@@ -7,6 +7,7 @@ import './styles/ToDo.css'
 function ToDo() {
     const [showTitleRenameInput, setShowTitleRenameInput] = useState(false);
     const [showForm, setShowForm] = useState(false);
+    const [expanded, setExpanded] = useState(false);
 
     const [allTodoList, setAllTodoList] = useState({
         General : [],
@@ -14,48 +15,48 @@ function ToDo() {
         General2 : [
             {
                 name : "Task1",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task1",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task1",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task1",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task1",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task1",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task1",
-                date : "", 
-                priority : "", 
+                date : "05/10/2024", 
+                priority : "high", 
                 completed : false 
             },
             {
                 name : "Task2",
+                date : "09/10/2024", 
+                priority : "low", 
+                completed : false 
+            },
+            {
+                name : "Task3",
+                date : "10/10/2024", 
+                priority : "medium", 
+                completed : false 
+            },
+            {
+                name : "Task4",
+                date : "", 
+                priority : "", 
+                completed : false 
+            },
+            {
+                name : "Task5",
+                date : "", 
+                priority : "", 
+                completed : false 
+            },
+            {
+                name : "Task6",
+                date : "", 
+                priority : "", 
+                completed : false 
+            },
+            {
+                name : "Task7",
+                date : "", 
+                priority : "", 
+                completed : false 
+            },
+            {
+                name : "Task8",
                 date : "", 
                 priority : "", 
                 completed : false 
@@ -83,6 +84,9 @@ function ToDo() {
     const [currentList, setCurrentList] = useState(Object.values(allTodoList)[0]);
     const [currentListName, setCurrentListName] = useState(Object.keys(allTodoList)[0]);
     const [prevListName, setPrevListName] = useState("");
+    const [currentListIdx, setCurrentListIdx] = useState(null);
+    const [hoveredListIdx, setHoveredListIdx] = useState(null);
+    const [demo, setDemo] = useState(null);
     
     // const [currentListItems, setCurrentListItems] = useState([])
     const [currentListCurrentItem, setCurrentListCurrentItem] = useState({
@@ -111,6 +115,11 @@ function ToDo() {
             setCurrentList(allTodoList[listName]);
         }
 
+    }
+
+    
+    function updateAllList(listName) {
+        
     }
 
     useEffect(() => {
@@ -144,8 +153,19 @@ function ToDo() {
         setPrevListName(currentListName); 
       }, [showTitleRenameInput]);
 
-    function handleAddItemButtonClick() {
-        setShowForm(true);
+
+    function handleAddItemButtonClick(index) {
+        setExpanded(!expanded);
+        setCurrentListIdx(index);
+        // setHoveredListIdx(index);
+        setShowForm(prevState => !prevState);
+    }
+
+    function handleHoverEffects(index) {
+        setExpanded(!expanded);
+        setHoveredListIdx(index);
+        setCurrentListIdx(null);
+        setShowForm(false);
     }
 
     function handleClick() {
@@ -154,6 +174,15 @@ function ToDo() {
             setShowTitleRenameInput(true);
         }
     }
+
+    const handleCurrentItemChange = (e) => {
+        setDemo(e.target.value);
+      };
+
+    useEffect(() => {
+        console.log("demo :" + demo);
+    }, [demo]);
+
     
     const handleInputChange = (e) => {
         setCurrentListName(e.target.value);
@@ -184,19 +213,49 @@ function ToDo() {
 
                 <div className="list-items">
                     
-                    <div className="add-list-name-btn" style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} onClick={handleAddItemButtonClick}>
+                    <div className="add-list-name-btn" style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} onClick={() => handleAddItemButtonClick(currentList.length)}>
                     + Add New Item
                     </div>
 
                     {currentList && currentList.map((item, index) => (
-                        <div className="show-list-item-btn" style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} onClick={handleAddItemButtonClick}>
+                        <div className={`show-list-item-btn ${currentListIdx === index ? 'expanded' : ''}`} 
+                        style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} 
+                        onClick={() => handleAddItemButtonClick(index)} 
+                        // onBlur={() => setCurrentListIdx(null)}
+                        onMouseEnter={() => handleHoverEffects(index)}
+                        onMouseLeave={() => setHoveredListIdx(null)} 
+                        tabIndex={0} 
+                        key={index}
+                        >
                         {item.name}
+
+                        {currentListIdx === index && (
+                            
+                            <div className="current-item-info">
+                                <input className="edit-item-input"
+                                    type="text"
+                                    // value={item.name}
+                                    onChange={handleCurrentItemChange}
+                                    // onBlur={handleInputBlur}
+                                    // placeholder="Enter List Name"
+                                    // autoFocus
+                                />
+                                <div>{item.date}</div>
+                                <div>{item.priority}</div>
+                                <div>{item.completed}</div>
+                            </div>
+                        )} 
+                        {hoveredListIdx === index && !showForm && (
+                            <div className="hovered-item-info">
+                                <div>{item.date}</div>
+                                <div>{item.priority}</div>
+                                <div>{item.completed}</div>
+                            </div>
+                        )}
                         </div>
+
                     ))}
 
-                    {showForm && (
-                        <Form />
-                    )}
                 </div>
 
             </div>

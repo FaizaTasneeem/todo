@@ -51,9 +51,14 @@
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
-  height: 5px;
+  height: 35px;
+  transition-duration: 0.7s;
   /* margin-top: 60px; */
 }
+
+/* .show-list-item-btn:hover {
+  height: 200px;
+} */
 
 .add-list-name-input {
   background-color: grey;
@@ -63,3 +68,17 @@
   border-radius: 5px;
   height: 20px;
 }
+
+.expanded {
+  height: 200px;
+}
+
+/* .edit-item-input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  transition: border-bottom-color 0.3s ease;
+}
+
+.edit-item-input:focus {
+  border-bottom-color: blue;
+} */
