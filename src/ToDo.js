@@ -84,13 +84,13 @@ function ToDo() {
     const [currentList, setCurrentList] = useState(Object.values(allTodoList)[0]);
     const [currentListName, setCurrentListName] = useState(Object.keys(allTodoList)[0]);
     const [prevListName, setPrevListName] = useState("");
-    const [currentListIdx, setCurrentListIdx] = useState(null);
+    const [currentItemIdx, setCurrentItemIdx] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [modalMsg, setModalMsg] = useState("");
     const [demo, setDemo] = useState(null);
     
     // const [currentListItems, setCurrentListItems] = useState([])
-    const [currentListCurrentItem, setCurrentListCurrentItem] = useState({
+    const [currentItem, setCurrentItem] = useState({
         name : "",
         date : "", 
         priority : "", 
@@ -160,6 +160,22 @@ function ToDo() {
       }, [showTitleRenameInput]);
 
 
+      
+    function handleTitleClick() {
+        if (currentListName !== Object.keys(allTodoList)[0]) {
+            setShowTitleRenameInput(true);
+        }
+    }
+
+    const handleTitleInputChange = (e) => {
+        setCurrentListName(e.target.value);
+    };
+
+    const handleTitleInputBlur = () => {
+        setShowTitleRenameInput(false);
+    };
+
+
     function handleModal() {
         setShowModal(false);
         setModalMsg("");
@@ -168,19 +184,14 @@ function ToDo() {
 
     function handleAddItemOnClick(index) {
         setExpanded(true);
-        setCurrentListIdx(index);
+        setCurrentItemIdx(index);
     }
 
     function handleAddItemOnBlur() {
         setExpanded(false);
-        setCurrentListIdx(null);
+        setCurrentItemIdx(null);
     }
 
-    function handleTitleClick() {
-        if (currentListName !== Object.keys(allTodoList)[0]) {
-            setShowTitleRenameInput(true);
-        }
-    }
 
     const handleCurrentItemChange = (e) => {
         setDemo(e.target.value);
@@ -191,13 +202,6 @@ function ToDo() {
     }, [demo]);
 
     
-    const handleTitleInputChange = (e) => {
-        setCurrentListName(e.target.value);
-    };
-
-    const handleTitleInputBlur = () => {
-        setShowTitleRenameInput(false);
-    };
 
 
     return(
@@ -220,39 +224,26 @@ function ToDo() {
 
                 <div className="list-items">
                     
-                    <div className="add-list-name-btn" style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} onClick={() => handleAddItemOnClick(currentList.length)}>
-                    + Add New Item
-                    </div>
-
-                    {currentList && currentList.map((item, index) => (
-                        <div className={`show-list-item-btn ${currentListIdx === index ? 'expanded' : ''}`} 
-                        style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} 
-                        onClick={() => handleAddItemOnClick(index)} 
-                        tabIndex={0} 
-                        key={index}
-                        >
-                        
+                    <div className={`add-list-name-btn ${currentItemIdx === currentList.length ? 'expanded' : ''}`} 
+                        style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} 
+                        onClick={() => handleAddItemOnClick(currentList.length)}>
                         <div className="item-name">
-                            {item.name}
-                            {expanded && currentListIdx === index && <MdOutlineExpandLess style={{marginLeft:'93%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
+                            <div style={{width:'40%'}}>+ Add New Task</div>
+                            {expanded && currentItemIdx === currentList.length && <MdOutlineExpandLess style={{marginLeft:'70%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
                         </div>
-
-                        {currentListIdx === index && (
+                        {currentItemIdx === currentList.length && (
                             <div className="current-item-info" style={{marginTop:'4%'}} >
-                                {item.name}
                                 <input className="edit-item-input"
                                     style={{height: '30px', borderRadius:'4px', width:'90%', marginTop:'10px'}} 
                                     type="text"
                                     onChange={handleCurrentItemChange}
-                                    placeholder="Enter Task Name"
+                                    placeholder="Enter Task"
                                     autoFocus
                                 />
                                 
-                                <div style={{marginTop:'24px'}}>{item.date}</div>
                                 <label style={{height: '120%', width:'90%', marginTop:'8px'}} for="calendar">Select a date:</label>
                                 <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar"/>
 
-                                <div style={{marginTop:'24px'}}>{item.priority}</div>
                                 <fieldset style={{width:'90%', marginTop:'10px'}} >
                                     <legend>Select Priority:</legend>
                                     <label htmlFor="priority1">
@@ -284,6 +275,75 @@ function ToDo() {
                                         name="language"
                                         value="java"
                                         // checked={selectedLanguage === 'java'}
+                                        // onChange={handleLanguageChange}
+                                    />
+                                    Low
+                                    </label><br />
+                                </fieldset>
+                            </div>
+                        )} 
+                    </div>
+
+                    {currentList && currentList.map((item, index) => (
+                        <div className={`show-list-item-btn ${currentItemIdx === index ? 'expanded' : ''}`} 
+                        style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} 
+                        onClick={() => handleAddItemOnClick(index)} 
+                        tabIndex={0} 
+                        key={index}
+                        >
+                        
+                        <div className="item-name">
+                            {item.name}
+                            {expanded && currentItemIdx === index && <MdOutlineExpandLess style={{marginLeft:'93%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
+                        </div>
+
+                        {currentItemIdx === index && (
+                            <div className="current-item-info" style={{marginTop:'4%'}} >
+                                {item.name}
+                                <input className="edit-item-input"
+                                    style={{height: '30px', borderRadius:'4px', width:'90%', marginTop:'10px'}} 
+                                    type="text"
+                                    onChange={handleCurrentItemChange}
+                                    placeholder="Enter Task"
+                                    autoFocus
+                                />
+                                
+                                <div style={{marginTop:'24px'}}>{item.date}</div>
+                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} for="calendar">Select a date:</label>
+                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar"/>
+
+                                <div style={{marginTop:'24px'}}>{item.priority}</div>
+                                <fieldset style={{width:'90%', marginTop:'10px'}} >
+                                    <legend>Select Priority:</legend>
+                                    <label htmlFor="priority1">
+                                    <input
+                                        type="radio"
+                                        id="priority1"
+                                        name="language"
+                                        value="High"
+                                        // checked={selectedLanguage === 'high'}
+                                        // onChange={handleLanguageChange}
+                                    />
+                                    High
+                                    </label><br />
+                                    <label htmlFor="priority2">
+                                    <input
+                                        type="radio"
+                                        id="priority2"
+                                        name="language"
+                                        value="medium"
+                                        // checked={selectedLanguage === 'medium'}
+                                        // onChange={handleLanguageChange}
+                                    />
+                                    Medium
+                                    </label><br />
+                                    <label htmlFor="priority3">
+                                    <input
+                                        type="radio"
+                                        id="language3"
+                                        name="language"
+                                        value="low"
+                                        // checked={selectedLanguage === 'low'}
                                         // onChange={handleLanguageChange}
                                     />
                                     Low
