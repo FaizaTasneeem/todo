@@ -154,9 +154,9 @@ function ToDo() {
                 delete updatedTodoList[prevListName];
                 setAllTodoList(updatedTodoList);
             }
-            else if (currentListName !== "General Tasks" && currentListName in allTodoList) {
+            else if (currentListName === "General Tasks" || currentListName in allTodoList) {
                 console.log("currentListName :" + currentListName)
-                setModalMsg("The List named "+currentListName+" already exists.")
+                setModalMsg("The List named \'"+currentListName+"\' already exists.")
                 setShowModal(true);
             }
         }
@@ -209,7 +209,7 @@ function ToDo() {
     }
     
     function handleCurrentListChange(idx) {
-        if (idx == currentList.length) {
+        if (idx === currentList.length) {
             const updatedList = [...currentList, currentItem];
             setCurrentList(updatedList);
         }
