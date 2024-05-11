@@ -3,7 +3,8 @@ import Navbar from './components/Navbar';
 import Modal from "./components/Modal";
 import './styles/ToDo.css'
 import { MdOutlineExpandLess } from "react-icons/md";
-
+import { TiTick } from "react-icons/ti";
+import { RxCross2 } from "react-icons/rx";
 
 function ToDo() {
     const [showTitleRenameInput, setShowTitleRenameInput] = useState(false);
@@ -89,7 +90,6 @@ function ToDo() {
     const [modalMsg, setModalMsg] = useState("");
     const [demo, setDemo] = useState(null);
     
-    // const [currentListItems, setCurrentListItems] = useState([])
     const [currentItem, setCurrentItem] = useState({
         name : "",
         date : "", 
@@ -129,6 +129,10 @@ function ToDo() {
 
     useEffect(() => {
         console.log("currentList :" + currentList);
+
+        const updatedTodoList = { ...allTodoList };
+        updatedTodoList[currentListName] = currentList;
+        setAllTodoList(updatedTodoList);
     }, [currentList]);
 
     // useEffect(() => {
@@ -183,6 +187,14 @@ function ToDo() {
     }
 
     function handleAddItemOnClick(index) {
+        if (index == currentList.length) {
+            const curItem = currentItem;
+            setCurrentItem(curItem);
+        }
+        else {
+            const curItem = currentList[index];
+            setCurrentItem(curItem);
+        }
         setExpanded(true);
         setCurrentItemIdx(index);
     }
@@ -192,17 +204,23 @@ function ToDo() {
         setCurrentItemIdx(null);
     }
 
-
-    const handleCurrentItemChange = (e) => {
-        setDemo(e.target.value);
-    };
-
-    useEffect(() => {
-        console.log("demo :" + demo);
-    }, [demo]);
-
+    function handleCurrentItemChange(propertyName, value) {
+        setCurrentItem({ ...currentItem, [propertyName]: value });
+    }
     
+    function handleCurrentListChange(idx) {
+        if (idx == currentList.length) {
+            const updatedList = [...currentList, currentItem];
+            setCurrentList(updatedList);
+        }
+        else {
+            const updatedList = [...currentList];
+            updatedList[idx] = currentItem;
+            setCurrentList(updatedList);
+        }
 
+    }
+ 
 
     return(
         <div className="outer-container">
@@ -236,13 +254,15 @@ function ToDo() {
                                 <input className="edit-item-input"
                                     style={{height: '30px', borderRadius:'4px', width:'90%', marginTop:'10px'}} 
                                     type="text"
-                                    onChange={handleCurrentItemChange}
+                                    onChange={(e) => handleCurrentItemChange('name', e.target.value)}
                                     placeholder="Enter Task"
                                     autoFocus
                                 />
                                 
-                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} for="calendar">Select a date:</label>
-                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar"/>
+                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} htmlFor="calendar">Select a date:</label>
+                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar" 
+                                    onChange={(e) => handleCurrentItemChange('date', e.target.value)}
+                                />
 
                                 <fieldset style={{width:'90%', marginTop:'10px'}} >
                                     <legend>Select Priority:</legend>
@@ -252,8 +272,8 @@ function ToDo() {
                                         id="priority1"
                                         name="language"
                                         value="High"
-                                        // checked={selectedLanguage === 'javascript'}
-                                        // onChange={handleLanguageChange}
+                                        // checked={selectedLanguage === 'high'}
+                                        onChange={(e) => handleCurrentItemChange('priority', "high")}
                                     />
                                     High
                                     </label><br />
@@ -263,8 +283,8 @@ function ToDo() {
                                         id="priority2"
                                         name="language"
                                         value="python"
-                                        // checked={selectedLanguage === 'python'}
-                                        // onChange={handleLanguageChange}
+                                        // checked={selectedLanguage === 'medium'}
+                                        onChange={(e) => handleCurrentItemChange('priority', "medium")}
                                     />
                                     Medium
                                     </label><br />
@@ -274,12 +294,16 @@ function ToDo() {
                                         id="language3"
                                         name="language"
                                         value="java"
-                                        // checked={selectedLanguage === 'java'}
-                                        // onChange={handleLanguageChange}
+                                        // checked={selectedLanguage === 'low'}
+                                        onChange={(e) => handleCurrentItemChange('priority', "low")}
                                     />
                                     Low
                                     </label><br />
                                 </fieldset>
+                                <div className="save-delete" style={{ marginLeft:'93%', marginTop:'3%'}}>
+                                    <TiTick onClick={() => handleCurrentListChange(currentList.length)}/>
+                                    <RxCross2 style={{ marginLeft:'20%'}}/>
+                                </div>
                             </div>
                         )} 
                     </div>
@@ -293,8 +317,8 @@ function ToDo() {
                         >
                         
                         <div className="item-name">
-                            {item.name}
-                            {expanded && currentItemIdx === index && <MdOutlineExpandLess style={{marginLeft:'93%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
+                            <div style={{width:'40%'}}>{item.name}</div>
+                            {expanded && currentItemIdx === index && <MdOutlineExpandLess style={{marginLeft:'70%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
                         </div>
 
                         {currentItemIdx === index && (
@@ -303,14 +327,16 @@ function ToDo() {
                                 <input className="edit-item-input"
                                     style={{height: '30px', borderRadius:'4px', width:'90%', marginTop:'10px'}} 
                                     type="text"
-                                    onChange={handleCurrentItemChange}
+                                    onChange={(e) => handleCurrentItemChange('name', e.target.value)}
                                     placeholder="Enter Task"
                                     autoFocus
                                 />
                                 
                                 <div style={{marginTop:'24px'}}>{item.date}</div>
-                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} for="calendar">Select a date:</label>
-                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar"/>
+                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} htmlFor="calendar">Select a date:</label>
+                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar" 
+                                    onChange={(e) => handleCurrentItemChange('date', e.target.value)}
+                                />
 
                                 <div style={{marginTop:'24px'}}>{item.priority}</div>
                                 <fieldset style={{width:'90%', marginTop:'10px'}} >
@@ -322,7 +348,7 @@ function ToDo() {
                                         name="language"
                                         value="High"
                                         // checked={selectedLanguage === 'high'}
-                                        // onChange={handleLanguageChange}
+                                        onChange={(e) => handleCurrentItemChange('priority', "high")}
                                     />
                                     High
                                     </label><br />
@@ -333,7 +359,7 @@ function ToDo() {
                                         name="language"
                                         value="medium"
                                         // checked={selectedLanguage === 'medium'}
-                                        // onChange={handleLanguageChange}
+                                        onChange={(e) => handleCurrentItemChange('priority', "medium")}
                                     />
                                     Medium
                                     </label><br />
@@ -344,12 +370,15 @@ function ToDo() {
                                         name="language"
                                         value="low"
                                         // checked={selectedLanguage === 'low'}
-                                        // onChange={handleLanguageChange}
+                                        onChange={(e) => handleCurrentItemChange('priority', "low")}
                                     />
                                     Low
                                     </label><br />
                                 </fieldset>
-                                <div>{item.completed}</div>
+                                <div className="save-delete" style={{ marginLeft:'93%', marginTop:'3%'}}>
+                                    <TiTick onClick={() => handleCurrentListChange(index)}/>
+                                    <RxCross2 style={{ marginLeft:'20%'}}/>
+                                </div>
                             </div>
                         )} 
                         </div>

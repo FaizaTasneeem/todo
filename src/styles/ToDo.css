@@ -99,6 +99,7 @@
 }
 
 .edit-item-input {
+  color: white;
   background-color: #282c34;
   width: 50%;
   /* cursor: pointer; */
@@ -110,4 +111,10 @@
 
 .edit-item-input::placeholder {
   color: white;
+}
+
+.save-delete {
+  display: flex;
+  flex-direction: row;
+  align-items: right;
 }
