@@ -88,6 +88,7 @@ function ToDo() {
     const [currentItemIdx, setCurrentItemIdx] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [modalMsg, setModalMsg] = useState("");
+    const [modalButtonMsg, setModalButtonMsg] = useState([]);
     const [demo, setDemo] = useState(null);
     
     const [currentItem, setCurrentItem] = useState({
@@ -157,6 +158,7 @@ function ToDo() {
             else if (currentListName === "General Tasks" || currentListName in allTodoList) {
                 console.log("currentListName :" + currentListName)
                 setModalMsg("The List named \'"+currentListName+"\' already exists.")
+                setModalButtonMsg(["OK"]);
                 setShowModal(true);
             }
         }
@@ -183,6 +185,7 @@ function ToDo() {
     function handleModal() {
         setShowModal(false);
         setModalMsg("");
+        setModalButtonMsg([]);
         setCurrentList(allTodoList[currentListName])
     }
 
@@ -202,6 +205,21 @@ function ToDo() {
     function handleAddItemOnBlur() {
         setExpanded(false);
         setCurrentItemIdx(null);
+    }
+
+    function handleDeleteTask(index) {
+        const updatedCurList = [...currentList];
+        updatedCurList.splice(index,1);
+        setCurrentList(updatedCurList);
+        setShowModal(false);
+        setModalMsg("");
+        setModalButtonMsg([]);
+    }
+    
+    function setDeleteTaskModalItems() {
+        setShowModal(true);
+        setModalButtonMsg(["Yes", "No"]);
+        setModalMsg("Are you sure you want to delete this Task?")
     }
 
     function handleCurrentItemChange(propertyName, value) {
@@ -247,7 +265,7 @@ function ToDo() {
                         onClick={() => handleAddItemOnClick(currentList.length)}>
                         <div className="item-name">
                             <div style={{width:'40%'}}>+ Add New Task</div>
-                            {expanded && currentItemIdx === currentList.length && <MdOutlineExpandLess style={{marginLeft:'70%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
+                            {expanded && currentItemIdx === currentList.length && <MdOutlineExpandLess style={{marginLeft:'65%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
                         </div>
                         {currentItemIdx === currentList.length && (
                             <div className="current-item-info" style={{marginTop:'4%'}} >
@@ -302,7 +320,6 @@ function ToDo() {
                                 </fieldset>
                                 <div className="save-delete" style={{ marginLeft:'93%', marginTop:'3%'}}>
                                     <TiTick onClick={() => handleCurrentListChange(currentList.length)}/>
-                                    <RxCross2 style={{ marginLeft:'20%'}}/>
                                 </div>
                             </div>
                         )} 
@@ -318,7 +335,8 @@ function ToDo() {
                         
                         <div className="item-name">
                             <div style={{width:'40%'}}>{item.name}</div>
-                            {expanded && currentItemIdx === index && <MdOutlineExpandLess style={{marginLeft:'70%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
+                            {!expanded && <RxCross2 onClick={setDeleteTaskModalItems} style={{ marginLeft:'70%'}}/>}
+                            {expanded && currentItemIdx === index && <MdOutlineExpandLess style={{marginLeft:'65%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
                         </div>
 
                         {currentItemIdx === index && (
@@ -377,7 +395,7 @@ function ToDo() {
                                 </fieldset>
                                 <div className="save-delete" style={{ marginLeft:'93%', marginTop:'3%'}}>
                                     <TiTick onClick={() => handleCurrentListChange(index)}/>
-                                    <RxCross2 style={{ marginLeft:'20%'}}/>
+                                    <RxCross2 onClick={setDeleteTaskModalItems} style={{ marginLeft:'20%'}}/>
                                 </div>
                             </div>
                         )} 
@@ -389,7 +407,14 @@ function ToDo() {
 
             </div>
 
-            {showModal && <Modal msgToDisplay={modalMsg} callbackFunc={handleModal}/>}
+            {showModal && 
+                <Modal 
+                    msgToDisplay={modalMsg} 
+                    titleRenameFunc={handleModal} 
+                    buttonMsgsList={modalButtonMsg} 
+                    deleteItemFunc={handleDeleteTask} 
+                    curItemIdx={currentItemIdx} 
+                />}
         </div>
     );
 }

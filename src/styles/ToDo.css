@@ -74,6 +74,10 @@
 .item-name {
   display: flex;
   flex-direction: row;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .add-list-name-input {

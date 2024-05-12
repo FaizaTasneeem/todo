@@ -21,6 +21,14 @@
   border-radius: 10px;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .modal-close-button {
   align-self: center;
   cursor: pointer;
@@ -28,4 +36,5 @@
   height: 30px;
   margin-top: 5%;
   width: 20%;
+  margin-left: 2%;
 }
