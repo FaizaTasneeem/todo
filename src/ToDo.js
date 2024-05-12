@@ -6,9 +6,14 @@ import { MdOutlineExpandLess } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import { RxCross2 } from "react-icons/rx";
 
+import { FaStarHalfAlt } from "react-icons/fa";
+import { FaStar } from "react-icons/fa6";
+import { FaRegStar } from "react-icons/fa";
+
 function ToDo() {
     const [showTitleRenameInput, setShowTitleRenameInput] = useState(false);
     const [expanded, setExpanded] = useState(false);
+    const [checkboxTriggered, setCheckboxTriggered] = useState(false);
 
     const [allTodoList, setAllTodoList] = useState({
         "General Tasks" : [],
@@ -131,11 +136,6 @@ function ToDo() {
 
     }
 
-    
-    function updateAllList(listName) {
-        
-    }
-
     useEffect(() => {
         console.log(allTodoList);
     }, [allTodoList]);
@@ -148,6 +148,14 @@ function ToDo() {
         setAllTodoList(updatedTodoList);
     }, [currentList]);
 
+    useEffect(() => {
+        if(checkboxTriggered) {
+            const updatedList = [...currentList];
+            updatedList[currentItemIdx] = currentItem;
+            setCurrentList(updatedList);
+            setCheckboxTriggered(false);
+        }
+    }, [checkboxTriggered]);
 
     useEffect(() => {
         //even though currentListName is being updated everytime onChange of input field, prevListName is not being updated with the new value of currentListName immediately, because setMethods are asynchronous and gets executed in batch after all the synchronous operations
@@ -247,6 +255,12 @@ function ToDo() {
         }
 
     }
+
+    function handleCurrentItemCheckBoxChange(idx) {
+        console.log("currentItem to be checked : ", currentList[idx])
+        setCurrentItem({ ...currentList[idx], completed: !currentList[idx].completed });
+        setCheckboxTriggered(true);
+    }
  
 
     return(
@@ -343,8 +357,21 @@ function ToDo() {
                         >
                         
                         <div className="item-name">
-                            <div style={{width:'40%'}}>{item.name}</div>
-                            {!expanded && <RxCross2 onClick={setDeleteTaskModalItems} style={{ marginLeft:'70%'}}/>}
+                            
+                            <label htmlFor="completed">
+                                <input className="custom-checkbox"
+                                    type="checkbox"
+                                    id="completed"
+                                    value="completed"
+                                    onChange={(e) => handleCurrentItemCheckBoxChange(index)}
+                                />
+                            </label><br />
+                            {item.priority==="low" && <FaRegStar style={{marginLeft:'1%', marginTop:'-0.7%', fontSize: '2rem'}}/>}
+                            {item.priority==="medium" && <FaStarHalfAlt style={{marginLeft:'1%', marginTop:'-0.7%', fontSize: '2rem'}}/>}
+                            {item.priority==="high" && <FaStar style={{marginLeft:'1%', marginTop:'-0.7%', fontSize: '2rem'}}/>}
+                            
+                            <div style={{marginLeft:'3%',width:'40%'}}>{item.name}</div>
+                            {!expanded && <RxCross2 onClick={setDeleteTaskModalItems} style={{ marginLeft:'70%', fontSize: '1.5rem'}}/>}
                             {expanded && currentItemIdx === index && <MdOutlineExpandLess style={{marginLeft:'65%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
                         </div>
 
@@ -372,9 +399,7 @@ function ToDo() {
                                     <input
                                         type="radio"
                                         id="priority1"
-                                        name="language"
                                         value="High"
-                                        // checked={selectedLanguage === 'high'}
                                         onChange={(e) => handleCurrentItemChange('priority', "high")}
                                     />
                                     High
@@ -383,9 +408,7 @@ function ToDo() {
                                     <input
                                         type="radio"
                                         id="priority2"
-                                        name="language"
                                         value="medium"
-                                        // checked={selectedLanguage === 'medium'}
                                         onChange={(e) => handleCurrentItemChange('priority', "medium")}
                                     />
                                     Medium
@@ -394,9 +417,7 @@ function ToDo() {
                                     <input
                                         type="radio"
                                         id="language3"
-                                        name="language"
                                         value="low"
-                                        // checked={selectedLanguage === 'low'}
                                         onChange={(e) => handleCurrentItemChange('priority', "low")}
                                     />
                                     Low
