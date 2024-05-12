@@ -84,12 +84,13 @@ function ToDo() {
     });
     const [currentList, setCurrentList] = useState(Object.values(allTodoList)[0]);
     const [currentListName, setCurrentListName] = useState(Object.keys(allTodoList)[0]);
+    
     const [prevListName, setPrevListName] = useState("");
     const [currentItemIdx, setCurrentItemIdx] = useState(null);
+    
     const [showModal, setShowModal] = useState(false);
     const [modalMsg, setModalMsg] = useState("");
     const [modalButtonMsg, setModalButtonMsg] = useState([]);
-    const [demo, setDemo] = useState(null);
     
     const [currentItem, setCurrentItem] = useState({
         name : "",
@@ -108,6 +109,17 @@ function ToDo() {
                 [listName]: []
             }));
         }
+    }
+
+    
+    function deleteList(listName) {
+        console.log("list to be deleted: ", listName);    
+        const updatedTodoList = { ...allTodoList };
+        delete updatedTodoList[listName];
+        setAllTodoList(updatedTodoList);
+        setCurrentList(allTodoList["General Tasks"]);
+        setCurrentListName("General Tasks");
+        setCurrentItemIdx(null);
     }
 
     function addCurrentList(listName) {
@@ -136,10 +148,7 @@ function ToDo() {
         setAllTodoList(updatedTodoList);
     }, [currentList]);
 
-    // useEffect(() => {
-    //     console.log("currentListName :" + currentListName);
 
-    // }, [currentListName]);
     useEffect(() => {
         //even though currentListName is being updated everytime onChange of input field, prevListName is not being updated with the new value of currentListName immediately, because setMethods are asynchronous and gets executed in batch after all the synchronous operations
         //so this has no effect whether we set it before or after the if condition, it actually gets executed later, and hence we're actually getting the value of currentListName in prevListName when the showTitleRenameInput was being set to true the first time the title was clicked
@@ -242,7 +251,7 @@ function ToDo() {
 
     return(
         <div className="outer-container">
-            <Navbar allList={allTodoList} sendBackListName={addNewList} sendCurrentListName={addCurrentList}/>
+            <Navbar allList={allTodoList} funcToAddList={addNewList} funcToDeleteList={deleteList} sendCurrentListName={addCurrentList}/>
             
             <div className="list-items-container">
                 <div className="list-name">
@@ -410,7 +419,7 @@ function ToDo() {
             {showModal && 
                 <Modal 
                     msgToDisplay={modalMsg} 
-                    titleRenameFunc={handleModal} 
+                    handleModal={handleModal} 
                     buttonMsgsList={modalButtonMsg} 
                     deleteItemFunc={handleDeleteTask} 
                     curItemIdx={currentItemIdx} 

@@ -58,3 +58,10 @@
   border-radius: 5px;
   height: 20px;
 }
+
+.list-name-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

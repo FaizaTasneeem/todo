@@ -1,10 +1,19 @@
 import React, {useState, useEffect} from "react";
+import { RxCross2 } from "react-icons/rx";
 import '../styles/Navbar.css'
+import Modal from "./Modal";
 
-function Navbar({allList, sendBackListName, sendCurrentListName}) {
+function Navbar({allList, funcToAddList, funcToDeleteList, sendCurrentListName}) {
     let allListNames = Object.keys(allList);
+    
     const [showInput, setShowInput] = useState(false);
+    const [showButton, setShowButton] = useState(false);
     const [inputValue, setInputValue] = useState("");
+    const [deleteListName, setDeleteListName] = useState("");
+    const [curListIdx, setCurListIdx] = useState("");
+    const [showModal, setShowModal] = useState(false);
+    const [modalMsg, setModalMsg] = useState("");
+    const [modalButtonMsg, setModalButtonMsg] = useState([]);
   
     const handleButtonClick = () => {
       setShowInput(true);
@@ -16,14 +25,42 @@ function Navbar({allList, sendBackListName, sendCurrentListName}) {
   
     const handleInputBlur = () => {
       setShowInput(false);
-    //   setInputValue("")
     };
 
+    function handleHover(index) {
+      setShowButton(true);
+      setCurListIdx(index);
+    }
+
+    function setDeleteListModalItems() {
+      setShowModal(true);
+      setModalButtonMsg(["Yes", "No"]);
+      setModalMsg("Are you sure you want to delete this List?")
+    }
+
+    function handleModal() {
+      setShowModal(false);
+      setModalMsg("");
+      setModalButtonMsg([]);
+    }
+
+    function handleDeleteList(index) {
+      console.log("list to be sent to delete: ", allListNames[index]);    
+      setDeleteListName(allListNames[index]);
+      setShowModal(false);
+      setModalMsg("");
+      setModalButtonMsg([]);
+    }
+
     useEffect(() => {
-        if(inputValue && !showInput) {
-          sendBackListName(inputValue);
-        }
-      }, [showInput]);
+      if(inputValue && !showInput) {
+        funcToAddList(inputValue);
+      }
+    }, [showInput]);
+
+    useEffect(() => {
+      funcToDeleteList(deleteListName);
+    }, [deleteListName]);
 
     
     return (
@@ -48,9 +85,35 @@ function Navbar({allList, sendBackListName, sendCurrentListName}) {
                 </div>
             )}
             {allListNames.map((listName, index) => (
-                index > 0 && <button className='list-names' style={{paddingTop:'15px', paddingBottom:'25px', marginBottom: index === allListNames.length - 1 ? '50px' : '5px'}} key={index} onClick={() => sendCurrentListName(listName)}>{listName}</button>
+                index > 0 && (
+
+                  <button className='list-names' 
+                  key={index} 
+                  style={{paddingTop:'15px', paddingBottom:'25px', marginBottom: index === allListNames.length - 1 ? '50px' : '5px'}} 
+                  onClick={() => sendCurrentListName(listName)}
+                  onMouseEnter={() => handleHover(index)}
+                  onMouseLeave={() => setShowButton(false)}
+                  >
+                    {listName}
+                    {curListIdx==index && showButton && 
+                      <RxCross2 
+                        onClick={setDeleteListModalItems} 
+                        style={{
+                          position: 'absolute', 
+                          marginLeft: '45px'
+                        }}
+                      />}
+                  </button>
+                )
             ))}
-            {/* <h3 style={{marginTop: '50px', color: 'white'}} >{inputValue}</h3> */}
+            {showModal && 
+                <Modal 
+                    msgToDisplay={modalMsg} 
+                    handleModal={handleModal} 
+                    buttonMsgsList={modalButtonMsg} 
+                    deleteItemFunc={handleDeleteList} 
+                    curItemIdx={curListIdx} 
+                />}
         </div>
     );
 }
