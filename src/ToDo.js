@@ -139,6 +139,10 @@ function ToDo() {
 
     }
 
+    // useEffect(() => {
+    //     setShowModal(false);
+    // }, []);
+
     useEffect(() => {
         console.log(allTodoList);
     }, [allTodoList]);
@@ -266,7 +270,9 @@ function ToDo() {
     }
  
     function sortCurList(sortedList) {
+        // setCurrentList(sortedList);
         setModifiedCurList(sortedList);
+
     }
 
     return(
@@ -287,7 +293,7 @@ function ToDo() {
                     )}
                 </div>
 
-                {modifiedCurList.length===0 && (<div className="list-items">
+                <div className="list-items">
                     
                     <div className={`add-list-name-btn ${currentItemIdx === currentList.length ? 'expanded' : ''}`} 
                         style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} 
@@ -373,7 +379,7 @@ function ToDo() {
                                     onChange={(e) => handleCurrentItemCheckBoxChange(index)}
                                 />
                             </label><br />
-                            {item.priority==="low" && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
+                            {(item.priority==="low" || item.priority==="") && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             {item.priority==="medium" && <FaStarHalfAlt style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             {item.priority==="high" && <FaStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             
@@ -440,163 +446,7 @@ function ToDo() {
 
                     ))}
 
-                </div>)}
-
-
-                {modifiedCurList.length!==0 && (<div className="list-items">
-                    
-                    <div className={`add-list-name-btn ${currentItemIdx === currentList.length ? 'expanded' : ''}`} 
-                        style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '50px', marginBottom: '50px'}} 
-                        onClick={() => handleAddItemOnClick(currentList.length)}>
-                        <div className="item-name">
-                            <div style={{width:'40%'}}>+ Add New Task</div>
-                            {expanded && currentItemIdx === currentList.length && <MdOutlineExpandLess style={{marginLeft:'65%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
-                        </div>
-                        {currentItemIdx === currentList.length && (
-                            <div className="current-item-info" style={{marginTop:'4%'}} >
-                                <input className="edit-item-input"
-                                    style={{height: '30px', borderRadius:'4px', width:'90%', marginTop:'10px'}} 
-                                    type="text"
-                                    onChange={(e) => handleCurrentItemChange('name', e.target.value)}
-                                    placeholder="Enter Task"
-                                    autoFocus
-                                />
-                                
-                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} htmlFor="calendar">Select a date:</label>
-                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar" 
-                                    onChange={(e) => handleCurrentItemChange('date', e.target.value)}
-                                />
-
-                                <fieldset style={{width:'90%', marginTop:'10px'}} >
-                                    <legend>Select Priority:</legend>
-                                    <label htmlFor="priority1">
-                                    <input
-                                        type="radio"
-                                        id="priority1"
-                                        name="language"
-                                        value="High"
-                                        // checked={selectedLanguage === 'high'}
-                                        onChange={(e) => handleCurrentItemChange('priority', "high")}
-                                    />
-                                    High
-                                    </label><br />
-                                    <label htmlFor="priority2">
-                                    <input
-                                        type="radio"
-                                        id="priority2"
-                                        name="language"
-                                        value="python"
-                                        // checked={selectedLanguage === 'medium'}
-                                        onChange={(e) => handleCurrentItemChange('priority', "medium")}
-                                    />
-                                    Medium
-                                    </label><br />
-                                    <label htmlFor="priority3">
-                                    <input
-                                        type="radio"
-                                        id="language3"
-                                        name="language"
-                                        value="java"
-                                        // checked={selectedLanguage === 'low'}
-                                        onChange={(e) => handleCurrentItemChange('priority', "low")}
-                                    />
-                                    Low
-                                    </label><br />
-                                </fieldset>
-                                <div className="save-delete" style={{ marginLeft:'93%', marginTop:'3%'}}>
-                                    <TiTick onClick={() => handleCurrentListChange(currentList.length)}/>
-                                </div>
-                            </div>
-                        )} 
-                    </div>
-
-                    {currentList && currentList.map((item, index) => (
-                        <div className={`show-list-item-btn ${currentItemIdx === index ? 'expanded' : ''}`} 
-                        style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} 
-                        onClick={() => handleAddItemOnClick(index)} 
-                        tabIndex={0} 
-                        key={index}
-                        >
-                        
-                        <div className="item-name">
-                            
-                            <label htmlFor="completed">
-                                <input className="custom-checkbox"
-                                    type="checkbox"
-                                    id="completed"
-                                    value="completed"
-                                    checked={item.completed}
-                                    onChange={(e) => handleCurrentItemCheckBoxChange(index)}
-                                />
-                            </label><br />
-                            {item.priority==="low" && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
-                            {item.priority==="medium" && <FaStarHalfAlt style={{marginLeft:'1%', fontSize: '22px'}}/>}
-                            {item.priority==="high" && <FaStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
-                            
-                            <div style={{marginLeft:'3%',width:'40%'}}>{item.name}</div>
-                            {!expanded && <RxCross2 onClick={setDeleteTaskModalItems} style={{ marginLeft:'70%', fontSize: '1.5rem'}}/>}
-                            {expanded && currentItemIdx === index && <MdOutlineExpandLess style={{marginLeft:'65%'}} onClick={(event) => { event.stopPropagation(); handleAddItemOnBlur(); }}/>}
-                        </div>
-
-                        {currentItemIdx === index && (
-                            <div className="current-item-info" style={{marginTop:'4%'}} >
-                                {item.name}
-                                <input className="edit-item-input"
-                                    style={{height: '30px', borderRadius:'4px', width:'90%', marginTop:'10px'}} 
-                                    type="text"
-                                    onChange={(e) => handleCurrentItemChange('name', e.target.value)}
-                                    placeholder="Enter Task"
-                                    autoFocus
-                                />
-                                
-                                <div style={{marginTop:'24px'}}>{item.date}</div>
-                                <label style={{height: '120%', width:'90%', marginTop:'8px'}} htmlFor="calendar">Select a date:</label>
-                                <input style={{height: '30px', borderRadius:'4px', width:'90%', background:'grey'}} type="date" id="calendar" name="calendar" 
-                                    onChange={(e) => handleCurrentItemChange('date', e.target.value)}
-                                />
-
-                                <div style={{marginTop:'24px'}}>{item.priority}</div>
-                                <fieldset style={{width:'90%', marginTop:'10px'}} >
-                                    <legend>Select Priority:</legend>
-                                    <label htmlFor="priority1">
-                                    <input
-                                        type="radio"
-                                        id="priority1"
-                                        value="High"
-                                        onChange={(e) => handleCurrentItemChange('priority', "high")}
-                                    />
-                                    High
-                                    </label><br />
-                                    <label htmlFor="priority2">
-                                    <input
-                                        type="radio"
-                                        id="priority2"
-                                        value="medium"
-                                        onChange={(e) => handleCurrentItemChange('priority', "medium")}
-                                    />
-                                    Medium
-                                    </label><br />
-                                    <label htmlFor="priority3">
-                                    <input
-                                        type="radio"
-                                        id="language3"
-                                        value="low"
-                                        onChange={(e) => handleCurrentItemChange('priority', "low")}
-                                    />
-                                    Low
-                                    </label><br />
-                                </fieldset>
-                                <div className="save-delete" style={{ marginLeft:'93%', marginTop:'3%'}}>
-                                    <TiTick onClick={() => handleCurrentListChange(index)}/>
-                                    <RxCross2 onClick={setDeleteTaskModalItems} style={{ marginLeft:'20%'}}/>
-                                </div>
-                            </div>
-                        )} 
-                        </div>
-
-                    ))}
-
-                </div>)}
+                </div>
 
             </div>
 
