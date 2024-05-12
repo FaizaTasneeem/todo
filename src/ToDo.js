@@ -363,12 +363,13 @@ function ToDo() {
                                     type="checkbox"
                                     id="completed"
                                     value="completed"
+                                    checked={item.completed}
                                     onChange={(e) => handleCurrentItemCheckBoxChange(index)}
                                 />
                             </label><br />
-                            {item.priority==="low" && <FaRegStar style={{marginLeft:'1%', marginTop:'-0.7%', fontSize: '2rem'}}/>}
-                            {item.priority==="medium" && <FaStarHalfAlt style={{marginLeft:'1%', marginTop:'-0.7%', fontSize: '2rem'}}/>}
-                            {item.priority==="high" && <FaStar style={{marginLeft:'1%', marginTop:'-0.7%', fontSize: '2rem'}}/>}
+                            {item.priority==="low" && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
+                            {item.priority==="medium" && <FaStarHalfAlt style={{marginLeft:'1%', fontSize: '22px'}}/>}
+                            {item.priority==="high" && <FaStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             
                             <div style={{marginLeft:'3%',width:'40%'}}>{item.name}</div>
                             {!expanded && <RxCross2 onClick={setDeleteTaskModalItems} style={{ marginLeft:'70%', fontSize: '1.5rem'}}/>}
