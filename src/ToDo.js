@@ -373,7 +373,7 @@ function ToDo() {
                                     onChange={(e) => handleCurrentItemCheckBoxChange(index)}
                                 />
                             </label><br />
-                            {(item.priority==="low" || item.priority==="") && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
+                            {item.priority==="low" && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             {item.priority==="medium" && <FaStarHalfAlt style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             {item.priority==="high" && <FaStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             
@@ -441,7 +441,6 @@ function ToDo() {
                     ))}
 
                 </div>)}
-
 
 
                 {modifiedCurList.length!==0 && (<div className="list-items">
@@ -530,7 +529,7 @@ function ToDo() {
                                     onChange={(e) => handleCurrentItemCheckBoxChange(index)}
                                 />
                             </label><br />
-                            {(item.priority==="low" || item.priority==="") && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
+                            {item.priority==="low" && <FaRegStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             {item.priority==="medium" && <FaStarHalfAlt style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             {item.priority==="high" && <FaStar style={{marginLeft:'1%', fontSize: '22px'}}/>}
                             
