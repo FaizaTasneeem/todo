@@ -36,7 +36,11 @@ function Sidebar({curList, funcToSort}) {
     }, [date]);
 
     useEffect(() => {
-        funcToSort(sortedCurList);
+        if (sortedCurList.length>0) {
+            console.log("sorted list to be sent",sortedCurList);
+            funcToSort(sortedCurList);
+            setSortedCurList([]);
+        }
     }, [sortedCurList]);
 
 

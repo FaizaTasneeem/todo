@@ -90,7 +90,6 @@ function ToDo() {
         List20 : []
     });
     const [currentList, setCurrentList] = useState(Object.values(allTodoList)[0]);
-    const [modifiedCurList, setModifiedCurList] = useState([]);
     const [currentListName, setCurrentListName] = useState(Object.keys(allTodoList)[0]);
     
     const [prevListName, setPrevListName] = useState("");
@@ -139,9 +138,9 @@ function ToDo() {
 
     }
 
-    // useEffect(() => {
-    //     setShowModal(false);
-    // }, []);
+    useEffect(() => {
+        setShowModal(false);
+    }, []);
 
     useEffect(() => {
         console.log(allTodoList);
@@ -270,9 +269,7 @@ function ToDo() {
     }
  
     function sortCurList(sortedList) {
-        // setCurrentList(sortedList);
-        setModifiedCurList(sortedList);
-
+        setCurrentList(sortedList);
     }
 
     return(
