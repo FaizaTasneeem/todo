@@ -4,12 +4,68 @@
   text-decoration: none;
 }
 
-.show-form {
-  background-color: grey;
-  color: black;
+.sidebar-container {
+  position: fixed;
+  color: wheat;
+  background-color: #282c34;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 18%;
+  height: 100%;
+  overflow-y: auto;
+  margin-left: 80%;
+}
+
+.custom-calendar {
+  background-color: #282c34 !important;
+  border: #282c34 !important;
+  padding: 10%;
+}
+
+.react-calendar__tile--active {
+  background-color: grey !important;
+  color: black !important;
+}
+
+.react-calendar__tile--hover {
+  background-color: wheat !important;
+  color: black !important;
+}
+
+/* .react-calendar__tile--now {
+  background-color: wheat !important;
+  color: black !important;
+} */
+
+.react-calendar__tile--hasActive {
+  color: black !important;
+}
+
+.react-calendar__tile {
+  color: #fff !important;
+}
+.react-calendar__navigation {
+  color: #fff !important;
+}
+
+.react-calendar__navigation button {
+  color: #fff !important;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: wheat !important;
+}
+.sidebar-btns {
+  background-color: wheat;
+  color: brown;
   border: none;
-  padding: 10px 20px;
+  cursor: pointer;
   border-radius: 5px;
-  height: 5px;
-  transition-duration: 0.7s;
+  margin-top: 20px;
+  width: 30%;
+  height: 40px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

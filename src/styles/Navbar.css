@@ -33,11 +33,9 @@
   background-color: wheat;
   color: brown;
   border: none;
-  /* padding: 5px 20px 20px; */
   cursor: pointer;
   border-radius: 5px;
   margin-top: 20px;
-
   width: 200px;
   height: 40px;
   overflow: hidden;

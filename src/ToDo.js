@@ -1,7 +1,9 @@
 import React, {useState, useEffect}  from "react";
 import Navbar from './components/Navbar';
 import Modal from "./components/Modal";
+import Sidebar from './components/Sidebar'
 import './styles/ToDo.css'
+
 import { MdOutlineExpandLess } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import { RxCross2 } from "react-icons/rx";
@@ -16,9 +18,7 @@ function ToDo() {
     const [checkboxTriggered, setCheckboxTriggered] = useState(false);
 
     const [allTodoList, setAllTodoList] = useState({
-        "General Tasks" : [],
-        General1 : [],
-        General2 : [
+        "General Tasks" : [
             {
                 name : "Task1",
                 date : "05/10/2024", 
@@ -28,13 +28,13 @@ function ToDo() {
             {
                 name : "Task2",
                 date : "09/10/2024", 
-                priority : "low", 
+                priority : "medium", 
                 completed : false 
             },
             {
                 name : "Task3",
                 date : "10/10/2024", 
-                priority : "medium", 
+                priority : "low", 
                 completed : false 
             },
             {
@@ -68,24 +68,26 @@ function ToDo() {
                 completed : false 
             }
         ],
-        General3 : [],
-        General4 : [],
-        General5 : [],
-        General6 : [],
-        General7 : [],
-        General8 : [],
-        General9 : [],
-        General10 : [],
-        General11 : [],
-        General12 : [],
-        General13 : [],
-        General14 : [],
-        General15 : [],
-        General16 : [],
-        General17 : [],
-        General18 : [],
-        General19 : [],
-        General20 : []
+        List1 : [],
+        List2 : [],
+        List3 : [],
+        List4 : [],
+        List5 : [],
+        List6 : [],
+        List7 : [],
+        List8 : [],
+        List9 : [],
+        List10 : [],
+        List11 : [],
+        List12 : [],
+        List13 : [],
+        List14 : [],
+        List15 : [],
+        List16 : [],
+        List17 : [],
+        List18 : [],
+        List19 : [],
+        List20 : []
     });
     const [currentList, setCurrentList] = useState(Object.values(allTodoList)[0]);
     const [currentListName, setCurrentListName] = useState(Object.keys(allTodoList)[0]);
@@ -446,6 +448,7 @@ function ToDo() {
                     deleteItemFunc={handleDeleteTask} 
                     curItemIdx={currentItemIdx} 
                 />}
+            <Sidebar curList={currentList}/>
         </div>
     );
 }
