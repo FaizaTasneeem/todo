@@ -3,16 +3,17 @@ import Navbar from './components/Navbar';
 import Modal from "./components/Modal";
 import Sidebar from './components/Sidebar'
 import './styles/ToDo.css'
-
+import { Pie } from 'react-chartjs-2';
+import {Chart, ArcElement} from 'chart.js'
 import { MdOutlineExpandLess } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import { RxCross2 } from "react-icons/rx";
-
 import { FaStarHalfAlt } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 import { FaRegStar } from "react-icons/fa";
 
 function ToDo() {
+    Chart.register(ArcElement);
     const [showTitleRenameInput, setShowTitleRenameInput] = useState(false);
     const [expanded, setExpanded] = useState(false);
     const [checkboxTriggered, setCheckboxTriggered] = useState(false);
@@ -98,6 +99,16 @@ function ToDo() {
     const [prevListName, setPrevListName] = useState("");
     const [currentItemIdx, setCurrentItemIdx] = useState(null);
     
+    const [dataForPie, setDataForPie] = useState({
+        labels: ['Completed', 'Remaining'],
+        datasets: [
+        //   {
+        //     // data: [currentList, currentList.length - 0],
+        //     // backgroundColor: ['#36A2EB', '#FF6384'],
+        //     // hoverBackgroundColor: ['#36A2EB', '#FF6384'],
+        //   },
+        ],
+    });
     const [showModal, setShowModal] = useState(false);
     const [modalMsg, setModalMsg] = useState("");
     const [modalButtonMsg, setModalButtonMsg] = useState([]);
@@ -150,7 +161,23 @@ function ToDo() {
     }, [allTodoList]);
 
     useEffect(() => {
-        console.log("currentList :" + currentList);
+        // console.log("currentList :" + currentList);
+        const updatedList = [...currentList];
+        updatedList[currentItemIdx] = currentItem;
+        const completedTasks = updatedList.filter((item,idx) => {
+            return item.completed === true;
+        })
+        const data = {
+            labels: ['Completed', 'Remaining'],
+            datasets: [
+              {
+                data: [updatedList.length, updatedList.length - completedTasks.length],
+                backgroundColor: ['#FF6384', 'wheat'],
+                hoverBackgroundColor: ['#36A2EB', '#FF6384'],
+              },
+            ],
+        };
+        setDataForPie(data);
 
         const updatedTodoList = { ...allTodoList };
         updatedTodoList[currentListName] = currentList;
@@ -161,6 +188,9 @@ function ToDo() {
         if(checkboxTriggered) {
             const updatedList = [...currentList];
             updatedList[currentItemIdx] = currentItem;
+            
+
+
             setCurrentList(updatedList);
             setCheckboxTriggered(false);
         }
@@ -297,6 +327,11 @@ function ToDo() {
                             autoFocus
                         />
                     )}
+                    <div className="pie-chart-container">
+                        <h3>Completed Tasks </h3>
+                        <Pie style={{marginLeft:'5%'}} data={dataForPie} />
+                    </div>
+
                 </div>
 
                 <div className="list-items">

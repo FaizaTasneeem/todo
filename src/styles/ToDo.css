@@ -134,3 +134,11 @@
 .custom-checkbox:checked {
   background-color: brown;
 }
+
+.pie-chart-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  width: 300px;
+  height: 25px;
+}
