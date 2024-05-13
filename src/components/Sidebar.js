@@ -54,6 +54,10 @@ function Sidebar({curList, funcToSort, sendSelectedProp, unselectAll}) {
                 onChange={selectDate}
                 value={date}
             />
+            <div className='done-undone-tasks'>
+                <button className='sidebar-btns bigger' style={{paddingTop:'15px', paddingBottom:'25px'}} onClick={() => sendSelectedProp('completed', true)}>Completed</button>
+                <button className='sidebar-btns bigger' style={{paddingTop:'15px', paddingBottom:'25px', marginLeft:'10%'}} onClick={() => sendSelectedProp('completed', false)}>Uncompleted</button>
+            </div>
             <button className='sidebar-btns' style={{paddingTop:'15px', paddingBottom:'25px'}} onClick={unselectAll}>Show All</button>
 
             <div style={{paddingTop:'15%'}}>Sort By: </div>

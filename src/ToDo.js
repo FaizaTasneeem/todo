@@ -271,11 +271,6 @@ function ToDo() {
     }
 
     function handleSelectedProp(propertyName, value) {
-        console.log(new Date(value));
-        const demo = currentList.filter((item, index) => {
-            return new Date(item.date).getTime() === new Date(value).getTime();
-        })
-        console.log(demo)
         setSelectedProp(propertyName);
         setSelectedPropVal(value);
     }
@@ -372,7 +367,7 @@ function ToDo() {
                     </div>
 
                     {currentList && currentList.map((item, index) => (
-                        <div className={`show-list-item-btn ${currentItemIdx === index ? 'expanded' : ''} ${selectedProp !=='' && selectedProp ==='date' && new Date(item[selectedProp]).getTime() !== new Date(selectedPropVal).getTime() ? 'custom-active-opacity' : ''} ${selectedProp === '' ? 'inactive-opactiy' : ''}`} 
+                        <div className={`show-list-item-btn ${currentItemIdx === index ? 'expanded' : ''} ${selectedProp !=='' && selectedProp ==='date' && new Date(item[selectedProp]).getTime() !== new Date(selectedPropVal).getTime() ? 'custom-active-opacity' : ''} ${selectedProp !=='' && selectedProp ==='completed' && item[selectedProp] !== selectedPropVal ? 'custom-active-opacity' : ''} ${selectedProp === '' ? 'inactive-opactiy' : ''}`} 
                         style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} 
                         onClick={() => handleAddItemOnClick(index)} 
                         tabIndex={0} 

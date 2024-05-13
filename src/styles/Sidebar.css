@@ -69,3 +69,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.done-undone-tasks {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.bigger {
+  width: 100px;
+}
