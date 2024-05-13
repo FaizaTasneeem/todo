@@ -90,9 +90,17 @@
 }
 
 .expanded {
-  /* height: 300px; */
   transition-duration: 1s;
   height: 400px;
+  opacity: 1;
+}
+
+.custom-active-opacity {
+  opacity: 0.1;
+}
+
+.inactive-opactiy {
+  opacity: 1;
 }
 
 .current-item-info {

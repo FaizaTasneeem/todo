@@ -17,6 +17,9 @@ function ToDo() {
     const [expanded, setExpanded] = useState(false);
     const [checkboxTriggered, setCheckboxTriggered] = useState(false);
 
+    const [selectedProp, setSelectedProp] = useState("");
+    const [selectedPropVal, setSelectedPropVal] = useState("");
+
     const [allTodoList, setAllTodoList] = useState({
         "General Tasks" : [
             {
@@ -108,7 +111,7 @@ function ToDo() {
 
 
     function addNewList(listName) {
-        console.log("Received list:", listName);
+        // console.log("Received list:", listName);
 
         if (!(listName in allTodoList)) {
             setAllTodoList(prevState => ({
@@ -120,7 +123,7 @@ function ToDo() {
 
     
     function deleteList(listName) {
-        console.log("list to be deleted: ", listName);    
+        // console.log("list to be deleted: ", listName);    
         const updatedTodoList = { ...allTodoList };
         delete updatedTodoList[listName];
         setAllTodoList(updatedTodoList);
@@ -143,7 +146,7 @@ function ToDo() {
     }, []);
 
     useEffect(() => {
-        console.log(allTodoList);
+        // console.log(allTodoList);
     }, [allTodoList]);
 
     useEffect(() => {
@@ -168,10 +171,6 @@ function ToDo() {
         //so this has no effect whether we set it before or after the if condition, it actually gets executed later, and hence we're actually getting the value of currentListName in prevListName when the showTitleRenameInput was being set to true the first time the title was clicked
         
         if(currentListName && !showTitleRenameInput) {
-            // console.log("prevListName :" + prevListName)
-            // console.log("currentListName :" + currentListName)
-            // console.log(showTitleRenameInput)
-            
             if (prevListName in allTodoList && prevListName!==currentListName && !Object.keys(allTodoList).includes(currentListName)) {
                 const updatedTodoList = { ...allTodoList };
                 updatedTodoList[currentListName] = updatedTodoList[prevListName];
@@ -263,15 +262,29 @@ function ToDo() {
     }
 
     function handleCurrentItemCheckBoxChange(idx) {
-        console.log("currentItem to be checked : ", currentList[idx])
         setCurrentItem({ ...currentList[idx], completed: !currentList[idx].completed });
         setCheckboxTriggered(true);
     }
  
     function sortCurList(sortedList) {
-        console.log("sorted list received : ", sortedList)
         setCurrentList([...sortedList]);
     }
+
+    function handleSelectedProp(propertyName, value) {
+        console.log(new Date(value));
+        const demo = currentList.filter((item, index) => {
+            return new Date(item.date).getTime() === new Date(value).getTime();
+        })
+        console.log(demo)
+        setSelectedProp(propertyName);
+        setSelectedPropVal(value);
+    }
+
+    function unselectAll() {
+        setSelectedProp("");
+        setSelectedPropVal("");
+    }
+
 
     return(
         <div className="outer-container">
@@ -359,15 +372,14 @@ function ToDo() {
                     </div>
 
                     {currentList && currentList.map((item, index) => (
-                        <div className={`show-list-item-btn ${currentItemIdx === index ? 'expanded' : ''}`} 
+                        <div className={`show-list-item-btn ${currentItemIdx === index ? 'expanded' : ''} ${selectedProp !=='' && selectedProp ==='date' && new Date(item[selectedProp]).getTime() !== new Date(selectedPropVal).getTime() ? 'custom-active-opacity' : ''} ${selectedProp === '' ? 'inactive-opactiy' : ''}`} 
                         style={{paddingTop:'10px', paddingBottom:'25px', marginTop: '10px', marginBottom: index === currentList.length - 1 ? '50px' : '10px'}} 
                         onClick={() => handleAddItemOnClick(index)} 
                         tabIndex={0} 
                         key={index}
                         >
                         
-                        <div className="item-name">
-                            
+                        <div className="item-name" >
                             <label htmlFor="completed">
                                 <input className="custom-checkbox"
                                     type="checkbox"
@@ -456,7 +468,7 @@ function ToDo() {
                     deleteItemFunc={handleDeleteTask} 
                     curItemIdx={currentItemIdx} 
                 />}
-            <Sidebar curList={currentList} funcToSort={sortCurList}/>
+            <Sidebar curList={currentList} funcToSort={sortCurList} sendSelectedProp={handleSelectedProp} unselectAll={unselectAll}/>
         </div>
     );
 }

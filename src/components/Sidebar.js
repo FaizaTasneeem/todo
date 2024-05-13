@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../styles/Sidebar.css'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
-function Sidebar({curList, funcToSort}) {
+function Sidebar({curList, funcToSort, sendSelectedProp, unselectAll}) {
+    const isInitialRender = useRef(true);
     const [date, setDate] = useState(new Date());
     const [sortedCurList, setSortedCurList] = useState([]);
     const priorityOrder = ['high', 'medium', 'low'];
@@ -26,18 +27,20 @@ function Sidebar({curList, funcToSort}) {
         setSortedCurList(curList);
     }
 
-    const onChange = (newDate) => {
-        setDate(newDate);
-    };
-
+    function selectDate (newDate) {
+        setDate(newDate) ;
+    }
    
     useEffect(() => {
-        console.log(date);
+        if (!isInitialRender.current) {
+            sendSelectedProp("date", date);
+        } else {
+            isInitialRender.current = false;
+        }
     }, [date]);
 
     useEffect(() => {
         if (sortedCurList.length>0) {
-            console.log("sorted list to be sent",sortedCurList);
             funcToSort(sortedCurList);
             setSortedCurList([]);
         }
@@ -48,13 +51,15 @@ function Sidebar({curList, funcToSort}) {
         <div className="sidebar-container">
             <div style={{paddingTop:'15%'}}>Select a date to view tasks.</div>
             <Calendar className="custom-calendar"
-                onChange={onChange}
+                onChange={selectDate}
                 value={date}
             />
+            <button className='sidebar-btns' style={{paddingTop:'15px', paddingBottom:'25px'}} onClick={unselectAll}>Show All</button>
 
             <div style={{paddingTop:'15%'}}>Sort By: </div>
             <button className='sidebar-btns' style={{paddingTop:'15px', paddingBottom:'25px'}} onClick={sortByDate}>Date</button>
             <button className='sidebar-btns' style={{paddingTop:'15px', paddingBottom:'25px'}} onClick={sortByPriority}>Priority</button>
+
         </div>
     );
 };
