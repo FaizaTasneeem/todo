@@ -269,7 +269,8 @@ function ToDo() {
     }
  
     function sortCurList(sortedList) {
-        setCurrentList(sortedList);
+        console.log("sorted list received : ", sortedList)
+        setCurrentList([...sortedList]);
     }
 
     return(
