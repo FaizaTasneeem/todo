@@ -89,14 +89,10 @@ function ToDo() {
     
     const [dataForPie, setDataForPie] = useState({
         labels: ['Completed', 'Remaining'],
-        datasets: [
-        //   {
-        //     // data: [currentList, currentList.length - 0],
-        //     // backgroundColor: ['#36A2EB', '#FF6384'],
-        //     // hoverBackgroundColor: ['#36A2EB', '#FF6384'],
-        //   },
-        ],
+        datasets: [],
     });
+    const [completedTaskRatio, setCompletedTaskRatio] = useState(0);
+
     const [showModal, setShowModal] = useState(false);
     const [modalMsg, setModalMsg] = useState("");
     const [modalButtonMsg, setModalButtonMsg] = useState([]);
@@ -166,6 +162,9 @@ function ToDo() {
             ],
         };
         setDataForPie(data);
+
+        const percentResult = (completedTasks.length / updatedList.length) * 100
+        setCompletedTaskRatio(percentResult.toFixed(2));
 
         const updatedTodoList = { ...allTodoList };
         updatedTodoList[currentListName] = currentList;
@@ -322,7 +321,7 @@ function ToDo() {
                         />
                     )}
                     <div className="pie-chart-container">
-                        <h3>Completed Tasks </h3>
+                        <h3>Completed Tasks : {isNaN(completedTaskRatio) ? '0' : completedTaskRatio} %</h3>
                         <Pie style={{marginLeft:'5%'}} data={dataForPie} />
                     </div>
 
