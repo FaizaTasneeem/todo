@@ -25,20 +25,20 @@ function ToDo() {
         "General Tasks" : [
             {
                 name : "Task1",
-                date : "05/10/2024", 
+                date : "06/09/2024", 
                 priority : "high", 
                 completed : false 
             },
             {
                 name : "Task2",
-                date : "09/10/2024", 
-                priority : "medium", 
+                date : "09/26/2024", 
+                priority : "low", 
                 completed : false 
             },
             {
                 name : "Task3",
-                date : "10/10/2024", 
-                priority : "low", 
+                date : "04/01/2024", 
+                priority : "medium", 
                 completed : false 
             },
             {
@@ -55,18 +55,6 @@ function ToDo() {
             },
             {
                 name : "Task6",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task7",
-                date : "", 
-                priority : "", 
-                completed : false 
-            },
-            {
-                name : "Task8",
                 date : "", 
                 priority : "", 
                 completed : false 
@@ -157,7 +145,7 @@ function ToDo() {
     }, []);
 
     useEffect(() => {
-        // console.log(allTodoList);
+        console.log(allTodoList);
     }, [allTodoList]);
 
     useEffect(() => {
@@ -275,6 +263,12 @@ function ToDo() {
     }
 
     function handleCurrentItemChange(propertyName, value) {
+        if (propertyName ==='date') {
+            const [year, month, day] = value.split('-');
+            const formattedDate = `${month}/${day}/${year}`;
+            value = formattedDate;
+            // console.log(value);
+        }
         setCurrentItem({ ...currentItem, [propertyName]: value });
     }
     
