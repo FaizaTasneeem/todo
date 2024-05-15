@@ -1,7 +1,9 @@
 import React, {useState, useEffect}  from "react";
 import Navbar from './components/Navbar';
-import Modal from "./components/Modal";
 import Sidebar from './components/Sidebar'
+import Modal from "./components/Modal";
+import Confetti from "./components/Confetti";
+
 import './styles/ToDo.css'
 import { Pie } from 'react-chartjs-2';
 import {Chart, ArcElement} from 'chart.js'
@@ -184,6 +186,15 @@ function ToDo() {
     }, [checkboxTriggered]);
 
     useEffect(() => {
+        if (completedTaskRatio == 100.00) {
+            console.log(completedTaskRatio)
+            setShowModal(true);
+            setModalMsg("Congratulations! You've completed all the tasks of \'"+currentListName+"\'.")
+            setModalButtonMsg(["OK"]);
+        }
+    }, [completedTaskRatio]);
+
+    useEffect(() => {
         //even though currentListName is being updated everytime onChange of input field, prevListName is not being updated with the new value of currentListName immediately, because setMethods are asynchronous and gets executed in batch after all the synchronous operations
         //so this has no effect whether we set it before or after the if condition, it actually gets executed later, and hence we're actually getting the value of currentListName in prevListName when the showTitleRenameInput was being set to true the first time the title was clicked
         
@@ -323,6 +334,7 @@ function ToDo() {
                     <div className="pie-chart-container">
                         <h3>Completed Tasks : {isNaN(completedTaskRatio) ? '0' : completedTaskRatio} %</h3>
                         <Pie style={{marginLeft:'5%'}} data={dataForPie} />
+                        {completedTaskRatio == 100.00 && showModal && <Confetti/>}
                     </div>
 
                 </div>
